@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Gジェネ エターナル・開発機体 所持率チェッカー</title>
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 20px;
+    background: #f7f7f7;
+  }
+
+  h1, h2 {
+    margin-top: 0;
+  }
+
+  .box {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* 一覧全体 */
+#itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+  /* カード本体 */
+  .item {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #ffffff;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 上側：名前＋所持 */
+  .item-top {
+    flex: 2;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .item-top:hover {
+    background: #f0f7ff;
+  }
+
+  /* 所持済み時の上側 */
+  .item.owned .item-top {
+    background: #dff6df;
+  }
+
+  .item.owned .item-top:hover {
+    background: #d2f0d2;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1.35;
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .owned-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-top: 8px;
+  }
+
+  .item.owned .owned-status {
+    color: #2f7d32;
+  }
+
+  .item:not(.owned) .owned-status {
+    color: #888;
+  }
+
+  /* 下側2分割 */
+  .item-bottom {
+    flex: 1;
+    display: flex;
+    border-top: 1px solid #ddd;
+  }
+
+  .bottom-btn {
+    flex: 1;
+    border: none;
+    background: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px;
+    transition: background-color 0.2s;
+  }
+
+  .bottom-btn:hover {
+    background: #f8f8f8;
+  }
+
+  .bottom-btn + .bottom-btn {
+    border-left: 1px solid #ddd;
+  }
+
+  .star-btn {
+    color: #444;
+  }
+
+  .level-btn {
+    color: #444;
+  }
+
+.star-btn.is-max {
+  background: #dff6df;
+  color: #2f7d32;
+}
+
+.star-btn.is-max:hover {
+  background: #d2f0d2;
+}
+
+.level-btn.is-max {
+  background: #dff6df;
+  color: #2f7d32;
+}
+
+.level-btn.is-max:hover {
+  background: #d2f0d2;
+}
+.group-header {
+  cursor: pointer;
+  font-weight: normal;
+  margin: 5px 0 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+}
+
+.group-header:hover {
+  background: #e8e8e8;
+}
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.group-title {
+  font-weight: bold;
+}
+
+.group-stats {
+  font-weight: normal;
+  margin-left: 8px;
+  color: #555;
+}
+
+.group-arrow {
+  margin-left: auto;
+}
+
+.bottom-btn.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+#resetDataBtn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+#resetDataBtn:hover {
+  background: #f5f5f5;
+}
+
+.note {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.group-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px 0;
+}
+
+.group-action-btn {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.group-action-btn:hover {
+  background: #f5f5f5;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+</style>
+
+</head>
+<body>
+
+  <h1>Gジェネ エターナル・開発機体 所持率チェッカー</h1>
+
+<div class="note">
+  ・本ツールは非公式のファンメイドツールであり、機体名称などの権利は各権利元様に帰属します。<br>
+  ・作品や機体の並び順は、悪の三兵機とSEED以外、ゲーム内のユニット図鑑に準じます。<br>
+  ・本ツールの作成にはChatGPTを利用しています（HTML作成支援）。<br>
+  ・問題がございましたらご連絡ください。あとユニット図鑑(26/04/05)によればもう一機いるらしいのですが、見失ったので教えていただけますと幸いです。　　作成者：あきらぽたーじゅ (X@Andras252)<br>
+</div>
+
+  <div class="box">
+    <h2>全体所持率</h2>
+    <div id="overallRate">0%</div>
+<button id="resetDataBtn">保存データ削除</button>
+  </div>
+
+
+
+  <div class="box">
+    <h2>一覧</h2>
+    <div id="itemList"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
