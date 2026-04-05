@@ -870,8 +870,8 @@ if (!item.owned) {
   levelBtn.classList.add("disabled");
 }
 
-        bottomDiv.appendChild(levelBtn);
         bottomDiv.appendChild(starBtn);
+        bottomDiv.appendChild(levelBtn);
 
         div.appendChild(topDiv);
         div.appendChild(bottomDiv);
