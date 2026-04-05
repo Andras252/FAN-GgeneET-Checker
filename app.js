@@ -575,6 +575,9 @@ const STORAGE_KEY = "ggene_checker_data";
 const MAX_LIMIT_BREAK = 3;
 const GROUP_STATE_KEY = "ggene_group_open_state";
 
+function saveGroupState() {
+  localStorage.setItem(GROUP_STATE_KEY, JSON.stringify(groupOpenState));
+}
 
 let groupOpenState = {};
 
@@ -706,13 +709,11 @@ header.innerHTML = `
 
 header.addEventListener("click", function () {
   groupOpenState[groupName] = !groupOpenState[groupName];
-
-  // ←これ追加
-  localStorage.setItem(GROUP_STATE_KEY, JSON.stringify(groupOpenState));
-
+  saveGroupState();
   renderItems();
 });
 
+    
     groupDiv.appendChild(header);
 
 
@@ -893,6 +894,7 @@ function renderAll() {
   renderOverallRate();
   renderItems();
   saveData();
+  saveGroupState();
 }
 
 loadData();
