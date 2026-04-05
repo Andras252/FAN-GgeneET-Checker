@@ -872,8 +872,8 @@ groupDiv.appendChild(actionsDiv);
 
 
 
-        bottomDiv.appendChild(starBtn);
         bottomDiv.appendChild(levelBtn);
+        bottomDiv.appendChild(starBtn);
 
         div.appendChild(topDiv);
         div.appendChild(bottomDiv);
