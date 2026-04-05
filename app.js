@@ -573,9 +573,16 @@ const itemList = document.getElementById("itemList");
 const resetDataBtn = document.getElementById("resetDataBtn");
 const STORAGE_KEY = "ggene_checker_data";
 const MAX_LIMIT_BREAK = 3;
+const GROUP_STATE_KEY = "ggene_group_open_state";
 
 
-const groupOpenState = {};
+let groupOpenState = {};
+
+// 保存データ読み込み
+const savedGroupState = localStorage.getItem(GROUP_STATE_KEY);
+if (savedGroupState) {
+  groupOpenState = JSON.parse(savedGroupState);
+}
 
 function saveData() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -599,6 +606,7 @@ function loadData() {
 
 function resetData() {
   localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(GROUP_STATE_KEY);
 
   items.forEach(item => {
     item.owned = false;
@@ -696,10 +704,14 @@ header.innerHTML = `
 `;
 
 
-    header.addEventListener("click", function () {
-      groupOpenState[groupName] = !groupOpenState[groupName];
-      renderItems();
-    });
+header.addEventListener("click", function () {
+  groupOpenState[groupName] = !groupOpenState[groupName];
+
+  // ←これ追加
+  localStorage.setItem(GROUP_STATE_KEY, JSON.stringify(groupOpenState));
+
+  renderItems();
+});
 
     groupDiv.appendChild(header);
 
