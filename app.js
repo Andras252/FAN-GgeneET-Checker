@@ -300,7 +300,7 @@ const items = [// 機体はこの下に置く！！！
 { id: "Unit-0294", name: "ソードストライクガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
 { id: "Unit-0295", name: "ランチャーストライクガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
 { id: "Unit-0296", name: "パーフェクトストライクガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
-{ id: "Unit-0297", name: "ヂュエルガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
+{ id: "Unit-0297", name: "デュエルガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
 { id: "Unit-0298", name: "ヂュエルガンダム アサルトシュラウド", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
 { id: "Unit-0299", name: "バスターガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
 { id: "Unit-0300", name: "ブリッツガンダム", group: "機動戦士ガンダムSEED", owned: false, limitBreak: 0, isLevelMax: false },
