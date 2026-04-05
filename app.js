@@ -818,10 +818,15 @@ groupDiv.appendChild(actionsDiv);
         topDiv.appendChild(nameDiv);
 
         topDiv.addEventListener("click", function () {
-  // 上を押したら、その機体の状態を全部解除
-  item.owned = false;
-  item.limitBreak = 0;
-  item.isLevelMax = false;
+  if (!item.owned) {
+    // 未所持 → 所持だけON（中身は空）
+    item.owned = true;
+  } else {
+    // 所持済み → 全解除
+    item.owned = false;
+    item.limitBreak = 0;
+    item.isLevelMax = false;
+  }
 
   renderAll();
 });
