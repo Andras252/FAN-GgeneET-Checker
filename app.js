@@ -660,6 +660,12 @@ function getStarDisplay(rarity, limitBreak) {
   return result;
 }
 
+function syncOwnedState(item) {
+  // 限凸かLV MAXのどちらかが入っていれば所持扱い
+  item.owned = item.limitBreak > 0 || item.isLevelMax;
+}
+
+
 
 function renderItems() {
   itemList.innerHTML = "";
@@ -812,16 +818,15 @@ groupDiv.appendChild(actionsDiv);
         topDiv.appendChild(nameDiv);
 
         topDiv.addEventListener("click", function () {
-          item.owned = !item.owned;
-
-          if (!item.owned) {
-            item.limitBreak = 0;
-            item.isLevelMax = false;
-          }
-
+  // 上を押したら、その機体の状態を全部解除
+  item.owned = false;
+  item.limitBreak = 0;
+  item.isLevelMax = false;
 
   renderAll();
 });
+
+        
         const bottomDiv = document.createElement("div");
         bottomDiv.className = "item-bottom";
 
@@ -833,16 +838,16 @@ groupDiv.appendChild(actionsDiv);
         }
 
         starBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
+  e.stopPropagation();
 
-        if (!item.owned) return;  
+  item.limitBreak++;
+  if (item.limitBreak > MAX_LIMIT_BREAK) {
+    item.limitBreak = 0;
+  }
 
-        item.limitBreak++;
-        if (item.limitBreak > MAX_LIMIT_BREAK) {
-          item.limitBreak = 0;
-        }
-        renderAll();
-       });
+  syncOwnedState(item);
+  renderAll();
+});
 
 
 
@@ -856,19 +861,16 @@ groupDiv.appendChild(actionsDiv);
 
 
         levelBtn.addEventListener("click", function (e) {
-          e.stopPropagation();
+  e.stopPropagation();
 
-          if (!item.owned) return;  
+  item.isLevelMax = !item.isLevelMax;
 
-          item.isLevelMax = !item.isLevelMax;
-          renderAll();
-        });
+  syncOwnedState(item);
+  renderAll();
+});
 
 
-if (!item.owned) {
-  starBtn.classList.add("disabled");
-  levelBtn.classList.add("disabled");
-}
+
 
         bottomDiv.appendChild(starBtn);
         bottomDiv.appendChild(levelBtn);
